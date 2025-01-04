@@ -22,7 +22,8 @@ class TaskController extends Controller
         // api/tasks?filter[is_done]=0 (uncompleted )
         // $tasks = QueryBuilder::for(Task::class)
         //     ->allowedFilters('is_done')
-        //     ->allowedSorts('-created_at')
+        //     ->allowedSort('-created_at')
+        //     ->allowedSorts(['title', 'is_done', 'created_at']) // api/tasks?sort=is_done,-title (sorted by is_done then title)
         //     ->paginate();
 
         return new TaskCollection(Task::all());
