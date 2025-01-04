@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('login', [AuthController::class, 'login']);
+
+Route::post('register', [AuthController::class, 'register']);
+
+
+// will sign in the user
+// api/user
+// with Authorization Bearer {token}
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 // api/tasks
 // show -> /api/tasks/1
-Route::apiResource('tasks', TaskController::class);
+// protected by sanctum so need api token
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('tasks', TaskController::class);
+});
+
