@@ -9,12 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // users is the name of user table
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('is_done')->default(false);
+            $table->foreignId('creator_id')->constrained('users');
             $table->timestamps();
         });
     }
