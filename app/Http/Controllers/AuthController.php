@@ -31,6 +31,8 @@ class AuthController extends Controller
         ], 200);
     }
 
+    // api/register
+    // body{ "name", "email", "password", "password_confirmation" }
     public function register(Request $request){
 
         $validated = $request->validate([

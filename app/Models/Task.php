@@ -31,6 +31,10 @@ class Task extends Model
         return $this->belongTo(User::class, 'creator_id');
     }
 
+    public function project(): BelongsTo {
+        return $this->belongsTo(Project::class);
+    }
+
     // Applies a global query scope to the model. This scope ensures that whenever the model is queried, 
     // it automatically filters the results to include only records where the creator_id matches the ID of the currently authenticated user.
     protected static function booted(): void{
