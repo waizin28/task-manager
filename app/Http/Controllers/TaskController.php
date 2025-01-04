@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskCollection;
+use App\Http\Resources\TaskResource;
+use Illuminate\Http\Request;
+use App\Models\Task;
+use Spatie\QueryBuilder\QueryBuilder;
+
+class TaskController extends Controller
+{
+
+    public function index(Request $request){
+        // new TaskCollection(Task::paginate())
+
+        
+        // this will allow us to filter via is_done and sort via lastly created_at time stamp
+
+        // api/tasks?filter[is_done]=0 (uncompleted )
+        // $tasks = QueryBuilder::for(Task::class)
+        //     ->allowedFilters('is_done')
+        //     ->allowedSorts('-created_at')
+        //     ->paginate();
+
+        return new TaskCollection(Task::all());
+    }
+
+    // return single resource
+    // api/tasks/1
+    public function show(Request $request, Task $task){
+        return new TaskResource($task);
+    }
+
+    public function store(StoreTaskRequest $request){
+
+        $validate = $request->validated();
+
+        $task = Task::create($validate);
+
+        return new TaskResource($task);
+    }
+
+    // api/tasks/2
+    // Using route model binding
+    public function update(UpdateTaskRequest $request, Task $task){
+
+        $validate = $request->validated();
+
+        $task->update($validate);
+
+        return new TaskResource($task);
+    }
+
+    public function destory(Request $request, Task $task){
+        $task->delete();
+        return response()->noContent();
+    }
+}
